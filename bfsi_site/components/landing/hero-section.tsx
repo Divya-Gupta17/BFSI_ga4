@@ -26,7 +26,7 @@ const slides = [
     stat: { value: "8.5%", label: "Max Returns" },
   },
   {
-    src: "/images/skyline.jpg",
+    src: "/images/skyline3.png",
     alt: "City skyline at dusk",
     title: "Loans That",
     highlight: "Work For You",
@@ -47,23 +47,23 @@ export function HeroSection() {
       const container = containerRef.current
       const rect = container.getBoundingClientRect()
       const scrollableHeight = container.offsetHeight - window.innerHeight
-      
+
       // Calculate how far we've scrolled into the container
       const scrollProgress = Math.max(0, -rect.top)
       const progressRatio = Math.min(1, scrollProgress / scrollableHeight)
-      
+
       // Determine which slide to show based on scroll progress
       const slideIndex = Math.min(
         slides.length - 1,
         Math.floor(progressRatio * slides.length)
       )
-      
+
       setCurrentSlide(slideIndex)
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
     handleScroll() // Initial call
-    
+
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -71,7 +71,7 @@ export function HeroSection() {
   const IconComponent = currentData.icon
 
   return (
-    <section 
+    <section
       ref={containerRef}
       className="relative"
       style={{ height: `${slides.length * 100}vh` }}
@@ -85,10 +85,10 @@ export function HeroSection() {
             className="absolute inset-0 transition-all duration-700 ease-out"
             style={{
               opacity: index === currentSlide ? 1 : 0,
-              transform: index === currentSlide 
-                ? "scale(1)" 
-                : index < currentSlide 
-                  ? "scale(1.05)" 
+              transform: index === currentSlide
+                ? "scale(1)"
+                : index < currentSlide
+                  ? "scale(1.05)"
                   : "scale(1.05)",
               zIndex: index === currentSlide ? 1 : 0,
             }}
@@ -124,10 +124,10 @@ export function HeroSection() {
                       className="absolute inset-0 text-balance text-4xl font-bold tracking-tight text-white transition-all duration-700 sm:text-5xl lg:text-6xl"
                       style={{
                         opacity: index === currentSlide ? 1 : 0,
-                        transform: index === currentSlide 
-                          ? "translateY(0)" 
-                          : index < currentSlide 
-                            ? "translateY(-40px)" 
+                        transform: index === currentSlide
+                          ? "translateY(0)"
+                          : index < currentSlide
+                            ? "translateY(-40px)"
                             : "translateY(40px)",
                       }}
                     >
@@ -145,10 +145,10 @@ export function HeroSection() {
                       className="absolute inset-0 text-pretty text-lg leading-relaxed text-white/90 transition-all duration-700"
                       style={{
                         opacity: index === currentSlide ? 1 : 0,
-                        transform: index === currentSlide 
-                          ? "translateY(0)" 
-                          : index < currentSlide 
-                            ? "translateY(-20px)" 
+                        transform: index === currentSlide
+                          ? "translateY(0)"
+                          : index < currentSlide
+                            ? "translateY(-20px)"
                             : "translateY(20px)",
                       }}
                     >
@@ -216,7 +216,7 @@ export function HeroSection() {
                         <span className="text-xl font-bold text-primary">{currentData.stat.value}</span>
                       </div>
                       <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/20">
-                        <div 
+                        <div
                           className="h-full rounded-full bg-primary transition-all duration-700"
                           style={{ width: `${((currentSlide + 1) / slides.length) * 100}%` }}
                         />
@@ -264,13 +264,12 @@ export function HeroSection() {
             {slides.map((_, index) => (
               <div
                 key={index}
-                className={`h-3 w-3 rounded-full transition-all duration-300 ${
-                  currentSlide === index
+                className={`h-3 w-3 rounded-full transition-all duration-300 ${currentSlide === index
                     ? "scale-125 bg-primary"
                     : currentSlide > index
                       ? "bg-white/60"
                       : "bg-white/30"
-                }`}
+                  }`}
               />
             ))}
           </div>
@@ -279,7 +278,7 @@ export function HeroSection() {
           <div className="absolute bottom-8 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2">
             <span className="text-sm text-white/60">Scroll to explore</span>
             <div className="flex h-10 w-6 items-start justify-center rounded-full border-2 border-white/30 p-1">
-              <div 
+              <div
                 className="h-2 w-1.5 animate-bounce rounded-full bg-white/80"
                 style={{ animationDuration: "1.5s" }}
               />

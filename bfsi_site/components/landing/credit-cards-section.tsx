@@ -14,7 +14,7 @@ const creditCards = [
     badge: "HOT SELLER",
     badgeColor: "bg-primary",
     bgGradient: "from-slate-900 via-slate-800 to-slate-900",
-    image: "/images/card-sapphire.png",
+    image: "/images/Gemini_Generated_Image_2ntywm2ntywm2nty.png",
     bestFor: "Premium lifestyle offers",
     description: "Lounge Access | Golf Rounds | BookMyShow Offer",
     features: ["Lounge Access", "Golf Rounds", "BookMyShow Offer"],
@@ -59,9 +59,8 @@ export function CreditCardsSection() {
         {/* Section Header */}
         <div
           ref={headerRef as React.RefObject<HTMLDivElement>}
-          className={`mx-auto max-w-2xl text-center transition-all duration-700 ${
-            headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`mx-auto max-w-2xl text-center transition-all duration-700 ${headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
             Choose Your Credit Card
@@ -79,9 +78,8 @@ export function CreditCardsSection() {
           {creditCards.map((card, index) => (
             <div
               key={card.id}
-              className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.bgGradient} p-6 shadow-2xl transition-all duration-700 hover:scale-105 hover:shadow-primary/20 ${
-                cardsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-              }`}
+              className={`group relative overflow-hidden rounded-2xl bg-gradient-to-br ${card.bgGradient} p-6 shadow-2xl transition-all duration-700 hover:scale-105 hover:shadow-primary/20 ${cardsVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+                }`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               {/* Badge */}
@@ -102,9 +100,9 @@ export function CreditCardsSection() {
               </div>
 
               {/* Card Image */}
-              <div className="relative mx-auto mt-8 h-48 w-full">
+              <div className="relative mx-auto mt-8 h-64 w-full">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative h-40 w-64 transition-transform duration-500 group-hover:scale-110">
+                  <div className="relative h-56 w-96 transition-transform duration-500 group-hover:scale-110">
                     <Image
                       src={card.image || "/placeholder.svg"}
                       alt={`${card.name} Credit Card`}

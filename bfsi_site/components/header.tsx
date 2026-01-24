@@ -4,193 +4,196 @@ import Link from "next/link"
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import { Menu, Shield, ChevronDown } from "lucide-react"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import { Menu, Shield, Search, Globe } from "lucide-react"
 
-const navigation = [
-  { name: "Home", href: "/" },
+const topNavigation = [
+  { name: "Personal", href: "/" },
+  { name: "Business", href: "/business" },
+  { name: "Asset Management", href: "/asset-management" },
+  { name: "Private Bank", href: "/private-bank" },
+]
+
+const mainNavigation = [
   {
-    name: "Products",
-    href: "/products",
-    children: [
-      { name: "Savings Accounts", href: "/products/savings-accounts" },
-      { name: "Personal Loans", href: "/products/personal-loans" },
-      { name: "Home Loans", href: "/products/home-loans" },
-      { name: "Insurance Plans", href: "/products/insurance" },
-    ],
+    name: "Banking",
+    href: "/banking",
+    subcategories: ["Accounts & services"],
   },
-  { name: "About", href: "/about" },
-  { name: "Support", href: "/support" },
+  {
+    name: "Borrowing",
+    href: "/borrowing",
+    subcategories: ["Cards & loans"],
+  },
+  {
+    name: "Investing",
+    href: "/investing",
+    subcategories: ["Wealth & Insurance"],
+  },
+  {
+    name: "NRI",
+    href: "/nri",
+    subcategories: ["NRI services & Transfers"],
+  },
+  {
+    name: "Offers",
+    href: "/offers",
+    subcategories: ["Offers & Rewards"],
+  },
+  {
+    name: "Online Banking",
+    href: "/online-banking",
+    subcategories: ["Banking made easy"],
+  },
 ]
 
 export function Header({ forceScrolled = false }: { forceScrolled?: boolean }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(forceScrolled)
+  const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
-    if (forceScrolled) {
-      setIsScrolled(true)
-      return
-    }
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [forceScrolled])
+    setMounted(true)
+  }, [])
 
   return (
-    <header 
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        isScrolled 
-          ? "border-b border-border bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/80" 
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-              <Shield className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <span className={`text-xl font-semibold tracking-tight transition-colors duration-300 ${
-              isScrolled ? "text-foreground" : "text-white"
-            }`}>
-              SecureBank
-            </span>
-          </Link>
-        </div>
-
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-1 md:flex">
-          {navigation.map((item) =>
-            item.children ? (
-              <DropdownMenu key={item.name}>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className={`flex items-center gap-1 transition-colors duration-300 ${
-                      isScrolled 
-                        ? "text-muted-foreground hover:text-foreground" 
-                        : "text-white/80 hover:text-white hover:bg-white/10"
-                    }`}
-                  >
-                    {item.name}
-                    <ChevronDown className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-48">
-                  {item.children.map((child) => (
-                    <DropdownMenuItem key={child.name} asChild>
-                      <Link href={child.href}>{child.name}</Link>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
+    <header className="fixed top-0 z-50 w-full bg-black">
+      {/* Top Bar */}
+      <div className="border-b border-white/10">
+        <div className="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Top Left Navigation */}
+          <div className="hidden items-center gap-6 md:flex">
+            {topNavigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors duration-300 ${
-                  isScrolled 
-                    ? "text-muted-foreground hover:text-foreground" 
-                    : "text-white/80 hover:text-white"
-                }`}
+                className="text-xs text-white/80 hover:text-white"
               >
                 {item.name}
               </Link>
-            )
-          )}
-        </div>
+            ))}
+          </div>
 
-        {/* Desktop CTA */}
-        <div className="hidden items-center gap-3 md:flex">
-          <Button 
-            variant="ghost" 
-            asChild 
-            className={`transition-colors duration-300 ${
-              !isScrolled && "text-white hover:text-white hover:bg-white/10"
-            }`}
-          >
-            <Link href="/login">Log in</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/products">Get Started</Link>
-          </Button>
-        </div>
-
-        {/* Mobile Menu */}
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild className="md:hidden">
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className={`transition-colors duration-300 ${
-                !isScrolled && "text-white hover:text-white hover:bg-white/10"
-              }`}
+          {/* Top Right Actions */}
+          <div className="flex items-center gap-4">
+            <button className="hidden items-center gap-1 text-xs text-white/80 hover:text-white md:flex">
+              <Globe className="h-3.5 w-3.5" />
+              English
+            </button>
+            <button className="hidden text-xs text-white/80 hover:text-white md:block">
+              <Search className="h-4 w-4" />
+            </button>
+            <Link href="/register" className="hidden text-xs text-white/80 hover:text-white md:block">
+              Register
+            </Link>
+            <Link
+              href="/login"
+              className="rounded bg-primary px-3 py-1 text-xs font-semibold text-white hover:bg-primary/90"
             >
+              Log On
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navigation Bar */}
+      <div className="border-b border-gray-200 bg-white">
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <Link href="/" className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded bg-primary">
+                <Shield className="h-6 w-6 text-white" />
+              </div>
+              <span className="text-xl font-bold text-black">SecureBank</span>
+            </Link>
+          </div>
+
+          {/* Desktop Main Navigation */}
+          <div className="hidden items-center gap-8 lg:flex">
+            {mainNavigation.map((item) => (
+              <div key={item.name} className="group relative">
+                <Link
+                  href={item.href}
+                  className="flex flex-col items-center text-black transition-colors hover:text-primary"
+                >
+                  <span className="text-sm font-medium">{item.name}</span>
+                  <span className="text-xs text-gray-600">{item.subcategories[0]}</span>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          {mounted ? (
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild className="lg:hidden">
+                <Button variant="ghost" size="icon" className="text-black hover:bg-gray-100 hover:text-black">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Open menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-full max-w-xs bg-black text-white">
+                <div className="flex flex-col gap-6 pt-6">
+                  <div className="flex items-center gap-2">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+                      <Shield className="h-5 w-5 text-white" />
+                    </div>
+                    <span className="text-xl font-semibold text-white">SecureBank</span>
+                  </div>
+
+                  {/* Mobile Top Navigation */}
+                  <div className="border-b border-white/10 pb-4">
+                    <div className="text-xs font-semibold text-white/60 mb-2">SECTIONS</div>
+                    <nav className="flex flex-col gap-2">
+                      {topNavigation.map((item) => (
+                        <Link
+                          key={item.name}
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="rounded-md px-3 py-2 text-sm font-medium text-white/80 hover:bg-white/10 hover:text-white"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </nav>
+                  </div>
+
+                  {/* Mobile Main Navigation */}
+                  <nav className="flex flex-col gap-2">
+                    <div className="text-xs font-semibold text-white/60 mb-2">SERVICES</div>
+                    {mainNavigation.map((item) => (
+                      <div key={item.name}>
+                        <Link
+                          href={item.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex flex-col rounded-md px-3 py-2 hover:bg-white/10"
+                        >
+                          <span className="text-sm font-medium text-white">{item.name}</span>
+                          <span className="text-xs text-white/60">{item.subcategories[0]}</span>
+                        </Link>
+                      </div>
+                    ))}
+                  </nav>
+
+                  {/* Mobile Actions */}
+                  <div className="flex flex-col gap-2 border-t border-white/10 pt-4">
+                    <Button variant="outline" asChild className="w-full border-white/30 bg-transparent text-white hover:bg-white/10">
+                      <Link href="/register">Register</Link>
+                    </Button>
+                    <Button asChild className="w-full">
+                      <Link href="/login">Log On</Link>
+                    </Button>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          ) : (
+            <Button variant="ghost" size="icon" className="text-black hover:bg-gray-100 hover:text-black lg:hidden">
               <Menu className="h-5 w-5" />
               <span className="sr-only">Open menu</span>
             </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-full max-w-xs">
-            <div className="flex flex-col gap-6 pt-6">
-              <div className="flex items-center gap-2">
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-                  <Shield className="h-5 w-5 text-primary-foreground" />
-                </div>
-                <span className="text-xl font-semibold text-foreground">SecureBank</span>
-              </div>
-              <nav className="flex flex-col gap-2">
-                {navigation.map((item) =>
-                  item.children ? (
-                    <div key={item.name} className="flex flex-col gap-1">
-                      <span className="px-3 py-2 text-sm font-medium text-foreground">
-                        {item.name}
-                      </span>
-                      <div className="flex flex-col gap-1 pl-4">
-                        {item.children.map((child) => (
-                          <Link
-                            key={child.name}
-                            href={child.href}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="rounded-md px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
-                          >
-                            {child.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
-                    >
-                      {item.name}
-                    </Link>
-                  )
-                )}
-              </nav>
-              <div className="flex flex-col gap-2 pt-4">
-                <Button variant="outline" asChild className="w-full bg-transparent">
-                  <Link href="/login">Log in</Link>
-                </Button>
-                <Button asChild className="w-full">
-                  <Link href="/products">Get Started</Link>
-                </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </nav>
+          )}
+        </nav>
+      </div>
     </header>
   )
 }
